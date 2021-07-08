@@ -45,6 +45,8 @@ INSERT into profiles values (1, 'm', '1997-12-01', NULL, 'Moscow', 'Russia');
 INSERT into profiles values (2, 'f', '1988-08-21', NULL, 'Moscow', 'Russia');
 -- INSERT into profiles values (3, 'f', '1988-08-21', NULL, 'Moscow', 'Russia'); -- Error Code: 1452. Cannot add or update a child row: a foreign key constraint fails (`vk`.`profiles`, CONSTRAINT `profiles_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`))	0.000 sec
 
+-- у одного пользователя может быть несколько сообений 1:М
+-- у одного сообщения один пользователь                1:1
 DROP TABLE IF EXISTS messages;
 CREATE TABLE messages (
     -- SERIAL = BIGINT UNSIGNED NOT NULL AUTO_INCREMENT
@@ -72,5 +74,76 @@ CREATE TABLE friend_requests(
     from_user_id BIGINT UNSIGNED NOT NULL,
     to_user_id BIGINT UNSIGNED NOT NULL,
     accepted BOOLEAN DEFAULT FALSE,
--- мы дважды не можем предложить дружбу одному человеку.
-)
+	-- мы дважды не можем предложить дружбу одному человеку.
+    -- первичный ключ уникален
+    PRIMARY KEY (from_user_id, to_user_id),
+    -- сочетание двух пользователей встречается
+    -- можем сделать сурогатный ключ и добавить unique (from_user_id, to_user_id)
+    INDEX friend_requests_from_user_id_idx(from_user_id),
+    INDEX friend_requests_to_user_id_idx(to_user_id),
+    -- ограничение CHECK
+    CONSTRAINT fk_friend_requests_from_user_id FOREIGN KEY (from_user_id) REFERENCES users (id),
+    CONSTRAINT fk_friend_requests_to_user_id FOREIGN KEY (to_user_id) REFERENCES users (id)
+    -- имя ограничений удобно прописывать, тогда когда получаем ошибку, имя ограничения
+    -- фигурирует в ней, тем самым мы знаем какое ограничение сработало, ведь их может
+    -- быть много на один столбец.
+);
+
+INSERT INTO friends_requests (from_user_id, to_user_id) VALUES (2, 1);
+
+CREATE TABLE communities (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(150) NOT NULL,
+    description VARCHAR(255),
+    admin_id BIGINT UNSIGNED NOT NULL,
+    KEY (admin_id), -- зачем делать индекс, разве FOREIGN KEY не делает ее ключом?
+    FOREIGN KEY (admin_id) REFERENCES users (id)
+);
+
+-- пользователи : сообщества
+-- M:1
+-- 1:M
+
+-- Таблица связи пользователей и сообществALTER
+CREATE TABLE communities_users(
+	community_id BIGINT UNSIGNED NOT NULL,
+    user_id BIGINT UNSIGNED NOT NULL,
+    created
+    PRIMARY KEY (community_id, user_id), -- только для уникальности?
+    -- поскольку очень часто будем смотреть какие пользователи входят в сообщество и
+    -- какие сообщества есть у пользователя, то добавим
+    KEY (community_id),
+    KEY (user_id),
+    FOREIGN KEY (community_id) REFERENCES communities(id),
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+CREATE TABLE media_types (
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL UNIQUE
+);
+
+INSERT INTO media_types VALUES (DEFAULT, 'изображение'), (DEFAULT, 'музыка');
+
+CREATE TABLE media (
+    id SERIAL PRIMARY KEY,
+    user_id BIGINT UNSIGNED NOT NULL,
+    media_types_id INT UNSIGNED NOT NULL,
+    file_name VARCHAR(255) COMMENT '/files/folder/img.png',
+    file_size BIGINT UNSIGNED,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    KEY (user_id),
+    KEY (media_types_id),
+    FOREIGN KEY (user_id)
+        REFERENCES users (id),
+    FOREIGN KEY (media_types_id)
+        REFERENCES mediatypes (id)
+);
+
+ALTER TABLE profiles MODIFY COLUMN photo_id BIGINT UNSIGNED;
+ALTER TABLE profiles ADD COLUMN passport_number VARCHAR(20);
+ALTER TABLE profile RENAME COLUMN passport_number TO passport;
+ALTER TABLE profile ADD KEY passport_idx (passport);
+ALTER TABLE profile DROP INDEX passport_idx;
+ALTER TABLE profile DROP COLUMN passport;
+
