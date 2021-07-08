@@ -44,3 +44,33 @@ create TABLE profiles (
 INSERT into profiles values (1, 'm', '1997-12-01', NULL, 'Moscow', 'Russia');
 INSERT into profiles values (2, 'f', '1988-08-21', NULL, 'Moscow', 'Russia');
 -- INSERT into profiles values (3, 'f', '1988-08-21', NULL, 'Moscow', 'Russia'); -- Error Code: 1452. Cannot add or update a child row: a foreign key constraint fails (`vk`.`profiles`, CONSTRAINT `profiles_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`))	0.000 sec
+
+DROP TABLE IF EXISTS messages;
+CREATE TABLE messages (
+    -- SERIAL = BIGINT UNSIGNED NOT NULL AUTO_INCREMENT
+    id SERIAL PRIMARY KEY,
+    from_user_id BIGINT UNSIGNED NOT NULL,
+    to_user_id BIGINT UNSIGNED NOT NULL,
+    txt TEXT NOT NULL,
+    is_delivered BOOLEAN DEFAULT FALSE,
+    created_at DATETIME NOT NULL DEFAULT NOW(),
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Время обновления строки',
+    -- поскольку очень часто будем искать по пользователям, то нужно добавить для них индексы
+    -- для индекса создается отдельная структура, если таблица маленькая, то искать по ней быстро,
+    -- а только тормозить операции вставки, изменения, удаления.
+    INDEX messages_from_user_id_idx(from_user_id),
+    INDEX messages_to_user_id_idx(to_user_id),
+    -- ограничение CHECK
+    CONSTRAINT fk_messages_from_user_id FOREIGN KEY (from_user_id) REFERENCES users (id),
+    CONSTRAINT fk_messages_to_user_id FOREIGN KEY (to_user_id) REFERENCES users (id)
+);
+
+INSERT INTO messages VALUES (DEFAULT, 1, 2, 'HI', 1, DEFAULT);
+INSERT INTO messages VALUES (DEFAULT, 1, 2, 'HI', 1, DEFAULT);
+
+CREATE TABLE friend_requests(
+    from_user_id BIGINT UNSIGNED NOT NULL,
+    to_user_id BIGINT UNSIGNED NOT NULL,
+    accepted BOOLEAN DEFAULT FALSE,
+-- мы дважды не можем предложить дружбу одному человеку.
+)
