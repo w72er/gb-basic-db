@@ -57,7 +57,7 @@ CREATE TABLE posts (
     title VARCHAR(150) NOT NULL,
     text TEXT NOT NULL,
     FOREIGN KEY (author_id) REFERENCES users(id),
-    INDEX (idx_author_id)
+    INDEX idx_author_id(author_id)
 );
 
 INSERT INTO posts VALUES (DEFAULT, 1, DEFAULT, DEFAULT, 'Meeting', 'I\'m Petya, nice to meet you');
@@ -75,6 +75,25 @@ CREATE TABLE post_likes (
     PRIMARY KEY (post_id, user_id)
 );
 
-INSERT INTO media_likes VALUES (1, 1); -- Petya likes post meeting
-INSERT INTO media_likes VALUES (1, 2); -- Vasya likes post meeting
+INSERT INTO post_likes VALUES (1, 1); -- Petya likes post meeting
+INSERT INTO post_likes VALUES (1, 2); -- Vasya likes post meeting
 
+/*
+ * Таблица лайков пользователей
+ *
+ * Наверно лайкают профили пользователей, но мы не будем изменять
+ * задание. Проблема в том, что у нас уже используется имя
+ * `user_id` - и оно показывает кто поставил лайк. Назовем
+ * пользователя кому ставят лайк `liked_user`.
+ * В остальном таблица лайков аналогична талице `media_likes`.
+ */
+CREATE TABLE user_likes (
+    liked_user_id BIGINT UNSIGNED NOT NULL COMMENT 'user who was liked',
+    user_id BIGINT UNSIGNED NOT NULL COMMENT 'user who liked another user',
+    FOREIGN KEY (liked_user_id) REFERENCES users(id),
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    PRIMARY KEY (liked_user_id, user_id)
+);
+
+INSERT INTO user_likes VALUES (2, 1); -- Vasya likes Petya
+INSERT INTO user_likes VALUES (1, 2); -- Petya likes Vasya
