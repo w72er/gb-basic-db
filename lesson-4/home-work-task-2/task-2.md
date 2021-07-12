@@ -12,13 +12,13 @@
 C:\'Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe' -u root -p --no-data > vk-schema-before.sql
 ```
 
-communities
+communities (4)
     id          Row Number
     name        App Name
     description Desc
 communities_users
 friend_requests
-* media
+* media (3)
   * user_id Row Number
   * file_size Number 100 10000
   * media_types_id Custom List 1,2,3,4
