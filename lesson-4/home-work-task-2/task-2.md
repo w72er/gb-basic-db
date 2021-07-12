@@ -18,7 +18,10 @@ communities
     description Desc
 communities_users
 friend_requests
-media
+* media
+  * user_id Row Number
+  * file_size Number 100 10000
+  * media_types_id Custom List 1,2,3,4
 * media_types (2)
   * id: Row Number
   * name: First Name
