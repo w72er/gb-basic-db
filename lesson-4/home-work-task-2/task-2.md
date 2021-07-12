@@ -19,7 +19,7 @@ C:\'Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe' -u root -p --no-data > 
 * communities_users (6)
   * user_id и com_id - числа из диапазона [1-100], чтобы было несколько записей увеличим количество строк до 200.
   * тестируем и убираем записи с ошибкой
-friend_requests
+* friend_requests (7)
 * media (3)
   * user_id Row Number
   * file_size Number 100 10000
