@@ -19,12 +19,19 @@ communities
 communities_users
 friend_requests
 media
-media_types
+* media_types (2)
+  * id: Row Number
+  * name: First Name
+
 messages
 posts
 posts_likes
-profiles
-* users
+* profiles -
+  * user_id: Row Number
+  * gender Gender
+  * birthday: Datetime, 07/12/1980 to 07/12/2004 format: SQL datetime
+  * photo_id
+* users (1)
   * id: Row Number
   * first_name: First Name
   * last_name: Last Name
