@@ -12,10 +12,10 @@
 C:\'Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe' -u root -p --no-data > vk-schema-before.sql
 ```
 
-communities (4)
-    id          Row Number
-    name        App Name
-    description Desc
+* communities (4)
+  * id: Row Number
+  * name: App Name
+  * description: Desc
 communities_users
 friend_requests
 * media (3)
@@ -31,9 +31,15 @@ posts
 posts_likes
 * profiles -
   * user_id: Row Number
-  * gender Gender
-  * birthday: Datetime, 07/12/1980 to 07/12/2004 format: SQL datetime
-  * photo_id
+  * gender Number [0 10]
+    ```text
+    if this == 0 then 'x'
+    elsif this % 2 == 0 then 'm'
+    else 'f' end
+    ```
+  * birthday: Datetime, 07/12/1980 to 07/12/2004 format: yyyy-mm-dd
+  * photo_id Row Number
+  * user_status: desc
 * users (1)
   * id: Row Number
   * first_name: First Name
