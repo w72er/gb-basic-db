@@ -29,7 +29,7 @@ C:\'Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe' -u root -p --no-data > 
   * name: First Name
 
 * messages (8)
-posts
+* posts (9)
 posts_likes
 * profiles (5)
   * user_id: Row Number
