@@ -16,7 +16,9 @@ C:\'Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe' -u root -p --no-data > 
   * id: Row Number
   * name: App Name
   * description: Desc
-communities_users
+* communities_users (6)
+  * user_id и com_id - числа из диапазона [1-100], чтобы было несколько записей увеличим количество строк до 200.
+  * тестируем и убираем записи с ошибкой
 friend_requests
 * media (3)
   * user_id Row Number
@@ -29,7 +31,7 @@ friend_requests
 messages
 posts
 posts_likes
-* profiles -
+* profiles (5)
   * user_id: Row Number
   * gender Number [0 10]
     ```text
