@@ -27,10 +27,9 @@ C:\'Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe' -u root -p --no-data > 
 * media_types (2)
   * id: Row Number
   * name: First Name
-
 * messages (8)
 * posts (9)
-posts_likes
+* posts_likes (10)
 * profiles (5)
   * user_id: Row Number
   * gender Number [0 10]
