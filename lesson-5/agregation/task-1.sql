@@ -2,6 +2,9 @@
 -- 1. Подсчитайте средний возраст пользователей в таблице users.
 --
 
+-- Short answer
+SELECT FORMAT(AVG( TIMESTAMPDIFF(YEAR, birthday_at, NOW()) ), 1) AS avg_age FROM users;
+
 --
 -- Solution
 --
@@ -30,4 +33,8 @@ INSERT INTO users VALUES
 
 SELECT * FROM users;
 
-SELECT NOW() - birthday_at FROM users;
+SELECT FLOOR((TO_DAYS(NOW()) - TO_DAYS(birthday_at)) / 365.25) AS age FROM users;
+
+SELECT TIMESTAMPDIFF(YEAR, birthday_at, NOW()) AS age FROM users;
+
+SELECT FORMAT(AVG( TIMESTAMPDIFF(YEAR, birthday_at, NOW()) ), 1) AS avg_age FROM users;
