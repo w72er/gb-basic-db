@@ -13,7 +13,7 @@ WHERE id = ANY (SELECT DISTINCT user_id FROM orders);
 -- WHERE id IN (SELECT DISTINCT user_id FROM orders);
 
 -- Solution 2
--- use JOIN and uniq by DISTINCT
+-- use LEFT JOIN and uniq by DISTINCT
 SELECT DISTINCT users.name
 FROM orders
 LEFT JOIN users ON (orders.user_id = users.id);
