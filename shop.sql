@@ -1,3 +1,7 @@
+DROP DATABASE IF EXISTS shop;
+CREATE DATABASE shop;
+USE shop;
+
 DROP TABLE IF EXISTS catalogs;
 CREATE TABLE catalogs (
   id SERIAL PRIMARY KEY,
@@ -43,7 +47,7 @@ DROP TABLE IF EXISTS products;
 CREATE TABLE products (
   id SERIAL PRIMARY KEY,
   name VARCHAR(255) COMMENT 'Название',
-  desription TEXT COMMENT 'Описание',
+  description TEXT COMMENT 'Описание',
   price DECIMAL (11,2) COMMENT 'Цена',
   catalog_id INT UNSIGNED,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
