@@ -44,7 +44,8 @@
 ```
 
 Реализация данной задачи описана по ссылке
-http://www.sql-tutorial.ru/ru/book_summarizing_data_using_rollup.html.
+http://www.sql-tutorial.ru/ru/book_summarizing_data_using_rollup.html,
+https://stackoverflow.com/questions/17934318/add-a-summary-row-with-totals.
 
 %artifact% Вывод стоимости портфеля осуществляется с помощью запроса
 [artifacts/print-portfolio-cost.sql](artifacts/print-portfolio-cost.sql).
