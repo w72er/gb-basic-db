@@ -2,7 +2,7 @@
 
 Порядок реализации функциональных требований:
 1. ФТ-03 +
-2. ФТ-05
+2. ФТ-05 +
 3. ФТ-04
 4. ФТ-01
 5. ФТ-02
@@ -45,10 +45,8 @@
 http://www.sql-tutorial.ru/ru/book_summarizing_data_using_rollup.html,
 https://stackoverflow.com/questions/17934318/add-a-summary-row-with-totals.
 
-%artifact% Вывод стоимости портфеля осуществляется с помощью запроса:
-* [artifacts/print-portfolio-cost.sql](artifacts/print-portfolio-cost.sql).
-* [artifacts/print-portfolio-cost.sql](artifacts/print-portfolio-cost.sql).
-* [artifacts/print-portfolio-cost.sql](artifacts/print-portfolio-cost.sql).
+%artifact% Вывод стоимости портфеля осуществляется с помощью запроса 
+[artifacts/print-portfolio-cost.sql](artifacts/print-portfolio-cost.sql).
 
 
 * вывести отчет о весе портфеля в рублях (долларах, евро)
@@ -75,7 +73,7 @@ sum(if(type='sell', -amount, amount))
 Поэтому продажу учитываю через отрицательную величину с
 комментарием к полю `amount` таблицы.
 
-
-
+%artifact% Покупка/продажа осуществляется с помощью запросов 
+[artifacts/buy-sell-ticker.sql](artifacts/buy-sell-ticker.sql).
 
 ФТ-06. Портфели не существуют сами по себе, они формируются под цели.
