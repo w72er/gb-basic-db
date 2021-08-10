@@ -3,7 +3,7 @@
 Порядок реализации функциональных требований:
 1. ФТ-03 +
 2. ФТ-05 +
-3. ФТ-04
+3. ФТ-04 +
 4. ФТ-01
 5. ФТ-02
 6. ФТ-06
@@ -56,10 +56,8 @@ https://stackoverflow.com/questions/17934318/add-a-summary-row-with-totals.
 Когда ты покупаешь 1 ценную бумагу, а через некоторое время, она
 делится на 10, и теперь у тебя 10 ценных бумаг.
 
-3
-4
-get_amounts(ticker_id, made_at) RETURN amount
-
+`get_multiplier(ticker_id1 BIGINT UNSIGNED, made_at DATETIME) RETURNS INT`
+[artifacts/create-04-get_multiplier.sql](artifacts/create-04-get_multiplier.sql).
 
 ФТ-05. Учесть продажу / покупку ценной бумаги, чтобы вести учет
 в приложении, поскольку доступ до биржи или брокера неоправдан.
