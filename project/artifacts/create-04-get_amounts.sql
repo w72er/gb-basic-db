@@ -23,31 +23,33 @@ DELIMITER //
 -- DETERMINISTIC, NO SQL, or READS SQL DATA
 
 -- https://stackoverflow.com/questions/5817395/how-can-i-loop-through-all-rows-of-a-table-mysql
-CREATE FUNCTION get_multiplier(ticker_id BIGINT UNSIGNED, made_at DATETIME) RETURNS INT READS SQL DATA
+CREATE FUNCTION get_multiplier(ticker_id1 BIGINT UNSIGNED, made_at DATETIME) RETURNS INT
+READS SQL DATA
 BEGIN
     DECLARE mul INT DEFAULT 1;
-    DECLARE multiplier INT DEFAULT NULL;
-    DECLARE splitted_at DATETIME DEFAULT NULL;
+    DECLARE multiplier1 INT;
+    DECLARE splitted_at1 DATETIME DEFAULT NULL;
     DECLARE done INT DEFAULT FALSE;
-    DECLARE cursor_i CURSOR FOR SELECT splitted_at, multiplier FROM stock_splits WHERE ticker_id = ticker_id;
+    DECLARE cursor_i CURSOR FOR SELECT splitted_at, multiplier FROM stock_splits WHERE ticker_id = ticker_id1;
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
 
     OPEN cursor_i;
     read_loop: LOOP
-        FETCH cursor_i INTO splitted_at, multiplier;
+        FETCH cursor_i INTO splitted_at1, multiplier1;
         IF done THEN
             LEAVE read_loop;
         END IF;
 
---        IF splitted_at < made_at THEN -- что-то не так с условием
---            SET mul = mul * multiplier;
---        END IF;
-        SET mul = mul * 2;
-    END LOOP;
+		IF splitted_at1 > made_at THEN -- что-то не так с условием
+			SET mul = mul * multiplier1;
+		END IF;
+	END LOOP;
     CLOSE cursor_i;
 
 	RETURN mul;
 END//
 DELIMITER ;
 
-SELECT get_multiplier(1, '2021-08-06 20:12:20');
+SELECT
+	get_multiplier(2, '2021-08-06 20:12:20'),
+    get_multiplier(1, '2021-08-06 20:12:20');
