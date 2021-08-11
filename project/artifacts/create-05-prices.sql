@@ -6,4 +6,5 @@ CREATE TABLE prices (
 INSERT INTO prices (ticker_id, price) VALUES
     (1, 800),
     (2, 6000),
-    (3, 77);
+    (3, 77),
+    (5, 74);
