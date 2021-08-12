@@ -19,6 +19,9 @@ SELECT * FROM amount_by_tickers;
 
 DROP VIEW IF EXISTS amount_by_tickers;
 CREATE VIEW amount_by_tickers AS
-	SELECT ticker_id, sum(get_multiplier(ticker_id, made_at) * amount) AS amount
+	SELECT
+		ticker_id,
+        portfolio_id,
+        sum(get_multiplier(ticker_id, made_at) * amount) AS amount
 	FROM deals
-    GROUP BY ticker_id;
+    GROUP BY portfolio_id, ticker_id;

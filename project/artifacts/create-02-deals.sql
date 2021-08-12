@@ -23,3 +23,25 @@ INSERT INTO deals (ticker_id, amount, made_at) VALUES
 (2, 3, '2021-08-06 20:12:20'),
 (3, 116, '2021-08-06 20:12:40'),
 (5, 200, '2021-08-06 20:13:00');
+
+-- после того как пользователь стал покупать ценные
+-- бумаги в портфель, требуется добавить идентификатор
+-- портфеля
+DROP TABLE IF EXISTS deals;
+CREATE TABLE deals (
+	id SERIAL PRIMARY KEY,
+    portfolio_id BIGINT UNSIGNED NOT NULL,
+    ticker_id BIGINT UNSIGNED NOT NULL,
+    amount INT NOT NULL,
+    made_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO deals (portfolio_id, ticker_id, amount, made_at) VALUES
+(1, 1, 4, '2021-08-06 20:12:00'),
+(1, 2, 3, '2021-08-06 20:12:20'),
+(1, 3, 116, '2021-08-06 20:12:40'),
+(1, 5, 200, '2021-08-06 20:13:00'),
+(2, 5, 200, '2021-08-06 20:13:00'),
+(3, 5, 200, '2021-08-06 20:13:00'),
+(4, 5, 200, '2021-08-06 20:13:00'),
+(5, 5, 200, '2021-08-06 20:13:00');

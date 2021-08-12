@@ -98,4 +98,22 @@ SELECT
 FROM tickers
 	INNER JOIN amount_by_tickers ON tickers.id = amount_by_tickers.ticker_id
     INNER JOIN prices ON tickers.id = prices.ticker_id
-WHERE tickers.type = 'bond';
+WHERE tickers.type = 'bond' AND amount_by_tickers.portfolio_id = 1;
+
+/* 
+ * Вывести стоимость портфеля ver 9
+ * @params: tickers.type - выводит бумаги акций ("share")
+ * или облигаций ("bond")
+ */
+SELECT
+    tickers.name AS ticker,
+    amount_by_tickers.amount AS amount,
+    prices.price AS price,
+    amount_by_tickers.portfolio_id,
+    amount_by_tickers.amount * prices.price AS "sum"
+FROM tickers
+	left JOIN amount_by_tickers ON tickers.id = amount_by_tickers.ticker_id
+    left JOIN prices ON tickers.id = prices.ticker_id
+WHERE tickers.type = 'share' AND amount_by_tickers.portfolio_id = 1;
+
+-- SELECT * FROM amount_by_tickers;
