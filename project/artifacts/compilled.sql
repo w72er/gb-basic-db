@@ -3,7 +3,7 @@ CREATE DATABASE stock;
 USE stock;
 
 CREATE TABLE tickers (
-	id SERIAL PRIMARY KEY, -- TODO: change to INT
+    id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(20) NOT NULL,
     type ENUM('share', 'bond')
 );
@@ -33,7 +33,7 @@ BEGIN
             LEAVE read_loop;
         END IF;
 
-		IF splitted_at1 > made_at THEN -- что-то не так с условием
+		IF splitted_at1 > made_at THEN
 			SET mul = mul * multiplier1;
 		END IF;
 	END LOOP;
@@ -44,8 +44,8 @@ END//
 DELIMITER ;
 
 CREATE TABLE prices (
-	ticker_id BIGINT UNSIGNED NOT NULL,
-    price DECIMAL NOT NULL, -- TODO: check kopeek size
+	ticker_id SMALLINT UNSIGNED NOT NULL,
+    price DECIMAL(8,2) NOT NULL,
     CONSTRAINT fk_prices_ticker_id FOREIGN KEY (ticker_id) REFERENCES tickers(id)
 );
 INSERT INTO prices (ticker_id, price) VALUES
@@ -61,7 +61,7 @@ CREATE TABLE country_shares (
 );
 
 CREATE TABLE rebalance_barriers (
-	barrier DECIMAL(4, 4) -- todo: check value truncated
+	barrier DECIMAL(4, 4)
 );
 
 INSERT INTO rebalance_barriers (barrier) VALUE (0.1);
@@ -89,7 +89,7 @@ INSERT INTO users_portfolios (user_id) VALUES
 CREATE TABLE deals (
 	id SERIAL PRIMARY KEY,
     portfolio_id BIGINT UNSIGNED NOT NULL,
-    ticker_id BIGINT UNSIGNED NOT NULL,
+    ticker_id SMALLINT UNSIGNED NOT NULL,
     amount INT NOT NULL,
     made_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_deals_portfolio_id FOREIGN KEY (portfolio_id) REFERENCES users_portfolios(id),
