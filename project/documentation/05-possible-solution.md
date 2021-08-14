@@ -43,7 +43,7 @@
 
 %artifact% Создание таблицы `country_shares` и добавление в нее
 данных приведены в
-[artifacts/create-06-country_shares.sql](artifacts/create-06-country_shares.sql).
+[artifacts/create-06-country_shares.sql](../artifacts/create-06-country_shares.sql).
 
 ФТ-02. Оповестить о внеплановой ребалансировке, чтобы не только
 привести риски в соответствии с индексом, но и заработать на
@@ -58,7 +58,7 @@
   Для расчета потребуется вычислить стоимость облигаций,
   для этого должен помимо учета ценных бумаг, у ценной бумаги
   должен быть тип. Подробнее смотри запрос
-  [artifacts/print-portfolio-cost.sql](artifacts/print-portfolio-cost.sql).
+  [artifacts/print-portfolio-cost.sql](../artifacts/print-portfolio-cost.sql).
 
 
 
@@ -78,7 +78,7 @@ http://www.sql-tutorial.ru/ru/book_summarizing_data_using_rollup.html,
 https://stackoverflow.com/questions/17934318/add-a-summary-row-with-totals.
 
 %artifact% Вывод стоимости портфеля осуществляется с помощью запроса 
-[artifacts/print-portfolio-cost.sql](artifacts/print-portfolio-cost.sql).
+[artifacts/print-portfolio-cost.sql](../artifacts/print-portfolio-cost.sql).
 
 * вывести отчет о весе портфеля в рублях (долларах, евро)
 
@@ -88,7 +88,7 @@ https://stackoverflow.com/questions/17934318/add-a-summary-row-with-totals.
 делится на 10, и теперь у тебя 10 ценных бумаг.
 
 `get_multiplier(ticker_id1 BIGINT UNSIGNED, made_at DATETIME) RETURNS INT`
-[artifacts/create-04-get_multiplier.sql](artifacts/create-04-get_multiplier.sql).
+[artifacts/create-04-get_multiplier.sql](../artifacts/create-04-get_multiplier.sql).
 
 ФТ-05. Учесть продажу / покупку ценной бумаги, чтобы вести учет
 в приложении, поскольку доступ до биржи или брокера неоправдан.
@@ -108,7 +108,7 @@ sum(if(type='sell', -amount, amount))
 комментарием к полю `amount` таблицы.
 
 %artifact% Покупка/продажа осуществляется с помощью запросов 
-[artifacts/buy-sell-ticker.sql](artifacts/buy-sell-ticker.sql).
+[artifacts/buy-sell-ticker.sql](../artifacts/buy-sell-ticker.sql).
 
 ФТ-06. Портфели не существуют сами по себе, они формируются под цели.
 

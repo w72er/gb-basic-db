@@ -1,6 +1,6 @@
 # Roadmap
 
-![roadmap](./doc-images/dependencies.png)
+![roadmap](doc-images/dependencies.png)
 
 1. Критерии приемки
 2. Желаемые темы
