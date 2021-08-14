@@ -42,32 +42,7 @@ BEGIN
 END//
 DELIMITER ;
 
--- ticker_id получаем от приложения, поскольку ожидаем,
--- что пользователь выставит ticker_id в выпадающем меню
--- в приложении.
-INSERT INTO deals (ticker_id, amount, made_at) VALUE
-(1, 2, '2021-08-09 20:12:00'); -- купить две доли VTBE
-INSERT INTO deals (ticker_id, amount, made_at) VALUE
-(1, -1, '2021-08-09 20:13:00'); -- продать одну долю VTBE
-
-SELECT * FROM deals;
-
-/*
- * Вывести стоимость портфеля ver 9
- * @params: tickers.type - выводит бумаги акций ("share")
- * или облигаций ("bond")
- */
-SELECT
-    tickers.name AS ticker,
-    amount_by_tickers.amount AS amount,
-    prices.price AS price,
-    amount_by_tickers.portfolio_id,
-    amount_by_tickers.amount * prices.price AS "sum"
-FROM tickers
-	left JOIN amount_by_tickers ON tickers.id = amount_by_tickers.ticker_id
-    left JOIN prices ON tickers.id = prices.ticker_id
-WHERE tickers.type = 'share' AND amount_by_tickers.portfolio_id = 1;
-
+-- Error Code: 1356. View 'stock.amount_by_tickers' references invalid table(s) or column(s) or function(s) or definer/invoker of view lack rights to use them
 
 /*
  * Поскольку непосредственно использовать
@@ -83,3 +58,19 @@ CREATE VIEW amount_by_tickers AS
         sum(get_multiplier(ticker_id, made_at) * amount) AS amount
 	FROM deals
     GROUP BY portfolio_id, ticker_id;
+
+/*
+ * Вывести стоимость портфеля
+ * @params: tickers.type - выводит бумаги акций ("share")
+ * или облигаций ("bond")
+ */
+SELECT
+    tickers.name AS ticker,
+    amount_by_tickers.amount AS amount,
+    prices.price AS price,
+    amount_by_tickers.portfolio_id,
+    amount_by_tickers.amount * prices.price AS "sum"
+FROM tickers
+	left JOIN amount_by_tickers ON tickers.id = amount_by_tickers.ticker_id
+    left JOIN prices ON tickers.id = prices.ticker_id
+WHERE tickers.type = 'share' AND amount_by_tickers.portfolio_id = 1;

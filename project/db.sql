@@ -129,10 +129,24 @@ CREATE TABLE goals (
     CONSTRAINT fk_goals_portfolio_id FOREIGN KEY (portfolio_id) REFERENCES users_portfolios(id)
 );
 
-INSERT INTO goals (user_id) VALUES
+INSERT INTO goals (portfolio_id, txt) VALUES
 	(1, "я просто люблю бабулесики"),
     (2, "коплю на поездку в Кипр в ноябре $3000"),
 	(3, "Хочу накопить денег на черный день"),
     (4, "-"),
     (5, "На гастро тур");
-    
+
+/*
+ * Хранит информацию о разделении ценной бумаги.
+ */
+CREATE TABLE stock_splits (
+	id SERIAL PRIMARY KEY,
+    ticker_id SMALLINT UNSIGNED NOT NULL,
+    multiplier INT NOT NULL,
+    splitted_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_stock_splits_ticker_id FOREIGN KEY (ticker_id) REFERENCES tickers(id)
+);
+
+INSERT INTO stock_splits (ticker_id, multiplier, splitted_at) VALUES
+	(2, 10, '2021-08-06 20:12:21'),
+    (2, 2, '2021-08-06 20:14:21');
