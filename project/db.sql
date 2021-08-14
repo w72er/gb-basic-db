@@ -4,7 +4,7 @@ USE stock;
 
 /*
  * Ценные бумаги идентифицируются по своеобразному названию
- * - тикеру. При долгосорочной пассивной стратегии
+ * - тикеру. При долгосрочной пассивной стратегии
  * с разделением капитала на акции и облигации, следует
  * хранить тип ценной бумаги.
  */
@@ -20,50 +20,6 @@ INSERT INTO tickers (name, type) VALUES
 ("FXDM", "share"),
 ("FXRU", "bond"),
 ("USD", "bond");
-
-/*
- * Поскольку ценные бумаги со временем могут разделиться,
- * чтобы покупатели сохранили покупательскую способность
- * бумаги, при многократном ее росте. Поэтому создадим
- * функцию get_multiplier, которая по тикеру и дате
- * приводит прошлое количество ценной бумаги к текущему
- * количеству.
- * Функция базируется на таблице таблице разделений
- * ценных бумаг stock_splits.
- * Подробнее см. ФТ-04.
- * @returns множитель количества актуального количества
- * ценной бумаги
- * @param ticker_id1 - идентификатор ценной бумаги
- * @param made_at - дата, когда была куплена ценная
- * бумага
- */
-DELIMITER //
-CREATE FUNCTION get_multiplier(ticker_id1 BIGINT UNSIGNED, made_at DATETIME) RETURNS INT
-READS SQL DATA
-BEGIN
-    DECLARE mul INT DEFAULT 1;
-    DECLARE multiplier1 INT; -- TODO: кривое именование переменных.
-    DECLARE splitted_at1 DATETIME DEFAULT NULL;
-    DECLARE done INT DEFAULT FALSE;
-    DECLARE cursor_i CURSOR FOR SELECT splitted_at, multiplier FROM stock_splits WHERE ticker_id = ticker_id1;
-    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
-
-    OPEN cursor_i;
-    read_loop: LOOP
-        FETCH cursor_i INTO splitted_at1, multiplier1;
-        IF done THEN
-            LEAVE read_loop;
-        END IF;
-
-		IF splitted_at1 > made_at THEN
-			SET mul = mul * multiplier1;
-		END IF;
-	END LOOP;
-    CLOSE cursor_i;
-
-	RETURN mul;
-END//
-DELIMITER ;
 
 /*
  * Список текущих цен ценных бумаг.
@@ -162,21 +118,6 @@ INSERT INTO deals (portfolio_id, ticker_id, amount, made_at) VALUES
 (3, 5, 200, '2021-08-06 20:13:00'),
 (4, 5, 200, '2021-08-06 20:13:00'),
 (5, 5, 200, '2021-08-06 20:13:00');
-
-/*
- * Поскольку непосредственно использовать
- * таблицу deals для определения количества
- * ценных бумаг невозможно из-за разделения ценных
- * бумаг, выставим представление в интерфейс, решающее
- * эту проблему.
- */
-CREATE VIEW amount_by_tickers AS
-	SELECT
-		ticker_id,
-        portfolio_id,
-        sum(get_multiplier(ticker_id, made_at) * amount) AS amount
-	FROM deals
-    GROUP BY portfolio_id, ticker_id;
 
 /*
  * Поскольку портфели не формируются сами по себе,
