@@ -15,25 +15,25 @@
  * бумага
  */
 DELIMITER //
-CREATE FUNCTION get_multiplier(ticker_id1 BIGINT UNSIGNED, made_at DATETIME) RETURNS INT
+CREATE FUNCTION get_multiplier(ticker_id BIGINT UNSIGNED, made_at DATETIME) RETURNS INT
 READS SQL DATA
 BEGIN
     DECLARE mul INT DEFAULT 1;
-    DECLARE multiplier1 INT; -- TODO: кривое именование переменных.
-    DECLARE splitted_at1 DATETIME DEFAULT NULL;
+    DECLARE multiplier INT;
+    DECLARE splitted_at DATETIME DEFAULT NULL;
     DECLARE done INT DEFAULT FALSE;
-    DECLARE cursor_i CURSOR FOR SELECT splitted_at, multiplier FROM stock_splits WHERE ticker_id = ticker_id1;
+    DECLARE cursor_i CURSOR FOR SELECT `splitted_at`, `multiplier` FROM stock_splits WHERE `ticker_id` = ticker_id;
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
 
     OPEN cursor_i;
     read_loop: LOOP
-        FETCH cursor_i INTO splitted_at1, multiplier1;
+        FETCH cursor_i INTO splitted_at, multiplier;
         IF done THEN
             LEAVE read_loop;
         END IF;
 
-		IF splitted_at1 > made_at THEN
-			SET mul = mul * multiplier1;
+		IF splitted_at > made_at THEN
+			SET mul = mul * multiplier;
 		END IF;
 	END LOOP;
     CLOSE cursor_i;
@@ -41,8 +41,6 @@ BEGIN
 	RETURN mul;
 END//
 DELIMITER ;
-
--- Error Code: 1356. View 'stock.amount_by_tickers' references invalid table(s) or column(s) or function(s) or definer/invoker of view lack rights to use them
 
 /*
  * Поскольку непосредственно использовать
